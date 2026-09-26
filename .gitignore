@@ -1,0 +1,70 @@
+# CMake / Ninja build directories and generated files
+build/
+build-*/
+cmake-build-*/
+out/
+CMakeFiles/
+CMakeCache.txt
+CMakeUserPresets.json
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+DartConfiguration.tcl
+Testing/
+.cmake/
+build.ninja
+rules.ninja
+.ninja_deps
+.ninja_log
+
+# MSVC binaries, intermediate files and debug symbols
+Debug/
+Release/
+RelWithDebInfo/
+MinSizeRel/
+*.obj
+*.exe
+*.dll
+*.lib
+*.exp
+*.pdb
+*.ilk
+*.pch
+*.idb
+*.ipch
+*.res
+*.tlog
+*.lastbuildstate
+
+# Locally compiled shaders; keep HLSL sources
+*.cso
+*.dxil
+
+# CLion / Visual Studio local state
+.idea/
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.VC.db
+*.VC.VC.opendb
+
+# Obsidian local state; keep notes, templates and shared settings
+**/.obsidian/workspace*.json
+**/.obsidian/cache/
+**/.obsidian/plugins/
+.trash/
+
+# OS and editor temporary files
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.tmp
+*.swp
+*.swo
+*~
+
+# Local reference checkouts are not project dependencies
+/references/

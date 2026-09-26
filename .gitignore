@@ -68,3 +68,4 @@ Desktop.ini
 
 # Local reference checkouts are not project dependencies
 /references/
+/docs/.obsidian

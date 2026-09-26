@@ -45,3 +45,55 @@ created: 2026-09-22
 - **持有与销毁：** main 持有 App；正常路径先显式清理窗口，再结束 App 寿命。禁止拷贝 / 移动（I5）；异常策略见功能笔记。
 - **线程与回调：** 在窗口创建线程调用；创建、销毁窗口也可能同步触发回调。
 
+## 本次变更
+
+### 成员增量
+
+| 类型 | 成员 | 初值 | 含义与所有权 |
+| --- | --- | --- | --- |
+| `std::unique_ptr<Dx12Renderer>` | `renderer_` | `nullptr` | App 独占；Renderer 借用 HWND，拥有 GPU 资源及 event |
+
+### 不变量增量
+
+| 编号 | 新增条件 | 成立边界 |
+| --- | --- | --- |
+| I6 | renderer_ 非空表示构造成功且未释放，不证明 GPU 空闲 | 初始化完成后；不另加 ready 布尔值 |
+| I7 | 渲染时 HWND 有效、renderer_ 非空、运行中且未最小化 | 每次调用 Renderer 前 |
+| I8 | 正常路径：GPU 等待成功 → 释放 Renderer → 销毁窗口 | 关闭阶段；图形失败走功能笔记的致命退出分支 |
+
+### 修改伪代码
+
+```cpp
+// 只组合具体 Dx12Renderer：当前仅需 DX12，真实替换需求出现再考虑接口。
+// 下列为新增 public 操作；跨类主循环见功能笔记。
+void InitializeGraphics() {
+    require(hWnd_ && !renderer_);
+    renderer_ = make_unique<Dx12Renderer>(hWnd_, 1280, 720);
+} // 构造失败不发布对象。
+
+void RenderFrame() {
+    require(hWnd_ && renderer_ && bRunning_ && !bMinimized_); // I7
+    renderer_->RenderFrame(colors[selected_ - 1]); // I4；颜色表见功能笔记。
+}
+
+void RequestExit() noexcept { bRunning_ = false; } // I1；重复请求无副作用。
+
+void ShutdownGraphics() {
+    require(!bRunning_);
+    if (!renderer_) return;
+    renderer_->WaitForGpu(); // 失败抛出，不执行 reset、不继续正常清理。
+    renderer_.reset();       // I8；unique_ptr 不会自动等待 GPU。
+}
+// CleanUp 新前提：renderer_ 已为空；其余清理逻辑不变。
+// 关闭/Esc/WM_DESTROY 改调 RequestExit；WM_PAINT 仅 BeginPaint/EndPaint，
+// 移除 GDI 填色及背景刷；回调中不做 GPU 工作。
+// 若前置声明 Renderer，App 析构定义放在能看到完整类型的 .cpp。
+// 验收：引用功能笔记，不复制结果；通过后合并成员、I6～I8及接口到当前设计。
+```
+
+## 后续考虑
+
+| 触发条件 | 再考虑的变化 |
+| --- | --- |
+| 出现多窗口，或窗口职责明显过重 | 提取 Win32Window |
+| 需要另一后端或测试替换 | 提炼 Renderer 接口 |

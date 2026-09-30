@@ -3,7 +3,10 @@ build/
 build-*/
 cmake-build-*/
 out/
+bin/
+obj/
 CMakeFiles/
+CMakeScripts/
 CMakeCache.txt
 CMakeUserPresets.json
 cmake_install.cmake
@@ -17,6 +20,14 @@ build.ninja
 rules.ninja
 .ninja_deps
 .ninja_log
+
+# FetchContent downloads and generated dependency builds
+_deps/
+
+# GoogleTest default reports and crash dumps; keep test sources
+test_detail.xml
+test_detail.json
+*.dmp
 
 # MSVC binaries, intermediate files and debug symbols
 Debug/
@@ -55,6 +66,8 @@ MinSizeRel/
 **/.obsidian/workspace*.json
 **/.obsidian/cache/
 **/.obsidian/plugins/
+# This project's vault configuration is local-only
+/docs/.obsidian/
 .trash/
 
 # OS and editor temporary files
@@ -68,4 +81,3 @@ Desktop.ini
 
 # Local reference checkouts are not project dependencies
 /references/
-/docs/.obsidian

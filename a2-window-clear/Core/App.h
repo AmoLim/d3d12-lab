@@ -4,11 +4,17 @@
 
 #ifndef A2_WINDOW_CLEAR_APP_H
 #define A2_WINDOW_CLEAR_APP_H
-#include "../utilities.h"
 
+#include <memory>
+#include <wrl/client.h>
+
+#include "Dx12/Dx12Renderer.h"
 
 namespace A2WindowClear {
     static constexpr LPCWSTR CLASSNAME = L"A2WindowClear";
+
+    static constexpr int WIDTH = 1280;
+    static constexpr int HEIGHT = 720;
 }
 
 class App {
@@ -17,6 +23,7 @@ public:
     static LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
     void InitializeWindow();
+    void InitializeRenderer();
 
     void CleanUp() noexcept;
 
@@ -30,8 +37,6 @@ public:
 
 public:
 
-    static constexpr int WIDTH = 1280;
-    static constexpr int HEIGHT = 720;
 
 protected:
     LRESULT HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -39,7 +44,6 @@ protected:
     //===========================
     // Initialize
 
-    void LoadPipeline();
 
 private:
     //===========================
@@ -56,6 +60,10 @@ private:
     //============================
     // Other
     int selected_ = 1;
+
+    //============================
+    // Direct12 Renderer
+    std::unique_ptr<Dx12Renderer> dx12Renderer_;
 };
 
 

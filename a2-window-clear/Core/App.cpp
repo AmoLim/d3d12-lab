@@ -6,6 +6,10 @@
 
 #include <windows.h>
 
+#include "Dx12/Dx12Renderer.h"
+#include "Dx12/CpuDescriptorHeap.h"
+#include "Utils/Exception.h"
+
 LRESULT App::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     App* app = nullptr;
 
@@ -43,7 +47,7 @@ LRESULT App::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 void App::InitializeWindow() {
     // 拿取当前.exe Windows资源Instance句柄
     hInstance_ = GetModuleHandle(nullptr);
-    Utils::CheckWin32(hInstance_ != nullptr, "GetModuleHandleW");
+    ThrowIfFailedWin32(hInstance_ != nullptr, "GetModuleHandleW");
 
     // 填入WNDCLASS参数
     WNDCLASSW wc{};
@@ -51,29 +55,38 @@ void App::InitializeWindow() {
     wc.lpszClassName = A2WindowClear::CLASSNAME;
     wc.hInstance = hInstance_;
     wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
-    Utils::CheckWin32(wc.hCursor != nullptr, "LoadCursorW");
+    ThrowIfFailedWin32(wc.hCursor != nullptr, "LoadCursorW");
 
     // 注册Window Class
-    Utils::CheckWin32(RegisterClassW(&wc), "RegisterClassW");
+    ThrowIfFailedWin32(RegisterClassW(&wc), "RegisterClassW");
     bClassRegistered_ = true;
 
     // check if can Adjust Target style to rect
     const DWORD style = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
-    RECT outer{0, 0, WIDTH, HEIGHT};
-    Utils::CheckWin32(AdjustWindowRect(&outer, style, FALSE), "AdjustWindowRect");
+    RECT outer{0, 0, A2WindowClear::WIDTH, A2WindowClear::HEIGHT};
+    ThrowIfFailedWin32(AdjustWindowRect(&outer, style, FALSE), "AdjustWindowRect");
 
     hWnd_ = CreateWindowExW(
         0, A2WindowClear::CLASSNAME,
         L"A2 Window Clear", style,
         CW_USEDEFAULT, CW_USEDEFAULT,
-        WIDTH, HEIGHT,
+        A2WindowClear::WIDTH, A2WindowClear::HEIGHT,
         nullptr, nullptr,
         hInstance_, this);
 
-    Utils::CheckWin32(hWnd_ != nullptr, "CreateWindowW");
+    ThrowIfFailedWin32(hWnd_ != nullptr, "CreateWindowW");
+}
+
+void App::InitializeRenderer() {
+    dx12Renderer_ = std::make_unique<Dx12Renderer>(hWnd_);
+    ThrowIfFailedWin32(dx12Renderer_ != nullptr, "dx12Renderer_ Creation Failed");
 }
 
 void App::CleanUp() noexcept {
+    if (dx12Renderer_ != nullptr) {
+        dx12Renderer_.reset();
+    }
+
     if (hWnd_ != nullptr) {
         if (!DestroyWindow(hWnd_)) {
             const DWORD error = GetLastError();
@@ -135,11 +148,9 @@ LRESULT App::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             PostQuitMessage(0);
             return 0;
         }
+        default:
+            break;
     }
 
     return DefWindowProcW(hWnd, msg, wParam, lParam);
-}
-
-void App::LoadPipeline() {
-
 }

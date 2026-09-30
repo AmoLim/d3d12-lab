@@ -4,6 +4,7 @@
 #include <windows.h>
 
 #include "Core/App.h"
+#include "Utils/Exception.h"
 
 
 int main() {
@@ -11,23 +12,17 @@ int main() {
     App app{};
     try {
         app.InitializeWindow();
+        app.InitializeRenderer();
 
         ShowWindow(app.GetHWnd(), SW_SHOW);
 
         MSG msg{};
 
         while (app.IsRunning()) {
-            const BOOL result = GetMessageW(&msg, nullptr, 0, 0);
-            if (result == -1) {
-                Utils::CheckWin32(FALSE, "GetMessageW");
+            while (PeekMessageW(&msg, nullptr, 0, 0, PM_REMOVE)) {
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
             }
-
-            if (result == 0) {
-                break;
-            }
-
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
 
             if (!app.IsRunning()) {
                 break;

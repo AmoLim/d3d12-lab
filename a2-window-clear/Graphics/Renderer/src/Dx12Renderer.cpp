@@ -2,14 +2,14 @@
 // Created by Amo on 2026/9/26.
 //
 
-#include "Dx12Renderer.h"
+#include "Renderer/Dx12Renderer.h"
 
 #include <cassert>
 
-#include "Core/App.h"
-#include "CpuDescriptorHeap.h"
-#include "FenceEvent.h"
-#include "Utils/Exception.h"
+#include "Config/WindowConfig.h"
+#include "D3D12/CpuDescriptorHeap.h"
+#include "D3D12/FenceEvent.h"
+#include "Core/Exception.h"
 
 
 Dx12Renderer::Dx12Renderer(HWND hwnd) : mHwnd(hwnd) {
@@ -43,6 +43,13 @@ CD3DX12_CPU_DESCRIPTOR_HANDLE Dx12Renderer::GetCurrentBackBufferView() const noe
 
 CD3DX12_CPU_DESCRIPTOR_HANDLE Dx12Renderer::GetDepthStencilView() const noexcept {
     return mDsvHeap->GetCpuHandle(0);
+}
+
+void Dx12Renderer::RenderFrame(const FLOAT clearColor[4]) {
+    RenderFrameInternal_(clearColor);
+}
+
+void Dx12Renderer::RenderFrameInternal_(const FLOAT clearColor[4]) {
 }
 
 void Dx12Renderer::Initialize() {

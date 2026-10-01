@@ -8,14 +8,8 @@
 #include <memory>
 #include <wrl/client.h>
 
-#include "Dx12/Dx12Renderer.h"
-
-namespace A2WindowClear {
-    static constexpr LPCWSTR CLASSNAME = L"A2WindowClear";
-
-    static constexpr int WIDTH = 1280;
-    static constexpr int HEIGHT = 720;
-}
+#include "Config/WindowConfig.h"
+#include "Renderer/Dx12Renderer.h"
 
 class App {
 public:
@@ -23,7 +17,11 @@ public:
     static LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
     void InitializeWindow();
+
+    //========================
+    // Dx12 Renderer
     void InitializeRenderer();
+    void RenderFrame();
 
     void CleanUp() noexcept;
 

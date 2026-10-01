@@ -3,8 +3,8 @@
 #include <memory>
 #include <windows.h>
 
-#include "Core/App.h"
-#include "Utils/Exception.h"
+#include "App.h"
+#include <exception>
 
 
 int main() {
@@ -27,6 +27,8 @@ int main() {
             if (!app.IsRunning()) {
                 break;
             }
+
+            app.RenderFrame();
         }
 
         app.CleanUp();

@@ -5,8 +5,8 @@
 #ifndef A2_WINDOW_CLEAR_EXCEPTION_H
 #define A2_WINDOW_CLEAR_EXCEPTION_H
 
-#include "DxException.h"
-#include "Win32Exception.h"
+#include "Core/DxException.h"
+#include "Core/Win32Exception.h"
 
 #define ThrowIfFailed(x)               \
 {                                      \

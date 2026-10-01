@@ -7,6 +7,7 @@
 #include <array>
 #include <wrl/client.h>
 #include <d3d12.h>
+#include <d3dx12.h>
 #include <dxgi1_6.h>
 #include <memory>
 
@@ -26,6 +27,10 @@ public:
     [[nodiscard]] CD3DX12_CPU_DESCRIPTOR_HANDLE GetCurrentBackBufferView() const noexcept;
 
     [[nodiscard]] CD3DX12_CPU_DESCRIPTOR_HANDLE GetDepthStencilView() const noexcept;
+
+    //============================================
+    // Render Interface
+    void RenderFrame(const FLOAT clearColor[4]);
 
 protected:
     static constexpr UINT SwapChainBufferCount = 2;
@@ -47,6 +52,10 @@ private:
     // DirectX Cleaning
     void Shutdown();
     void FlushCommandQueue();
+
+    // ============================================
+    // Render Internal function
+    void RenderFrameInternal_(const FLOAT clearColor[4]);
 
 private:
     ComPtr<ID3D12Debug> debugController = nullptr;

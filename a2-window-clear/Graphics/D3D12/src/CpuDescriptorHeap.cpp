@@ -2,11 +2,11 @@
 // Created by Amo on 2026/9/27.
 //
 
-#include "CpuDescriptorHeap.h"
+#include "D3D12/CpuDescriptorHeap.h"
 
 #include <cassert>
 
-#include "Utils/Exception.h"
+#include "Core/Exception.h"
 
 CpuDescriptorHeap::CpuDescriptorHeap(ID3D12Device* device, const D3D12_DESCRIPTOR_HEAP_TYPE type, const UINT capacity) {
     assert(device != nullptr);

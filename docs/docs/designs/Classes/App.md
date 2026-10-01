@@ -34,13 +34,14 @@ created: 2026-09-22
 
 ### 接口与生命周期
 
-| 接口 | 行为 | 前提 / 边界 |
-| --- | --- | --- |
-| `InitializeWindow()` | 注册窗口类并创建窗口 | 仅初始化一次；失败抛出，保留已获取资源的真实标志 |
-| `CleanUp()` | DestroyWindow → UnregisterClassW | 循环停止后调用；失败抛出；成功清理后重复调用为空操作 |
-| `IsRunning / IsMinimized / GetSelected / GetHwnd` | 只读查询 | HWND 只借用，窗口销毁后失效 |
-| `WndProc` | 绑定 / 查找 App → HandleMessage | 无绑定时默认处理；异常不得穿过系统回调边界 |
-| `HandleMessage` | 按键改选择；WM_SIZE 改最小化；关闭 / Esc 停止循环 | WM_DESTROY 兜底停止并 PostQuitMessage；WM_NCDESTROY 清空句柄并解绑 |
+| 接口                                                | 行为                               | 前提 / 边界                                               |
+| ------------------------------------------------- | -------------------------------- | ----------------------------------------------------- |
+| `InitializeWindow()`                              | 注册窗口类并创建窗口                       | 仅初始化一次；失败抛出，保留已获取资源的真实标志                              |
+| `CleanUp()`                                       | DestroyWindow → UnregisterClassW | 循环停止后调用；失败抛出；成功清理后重复调用为空操作                            |
+| `IsRunning / IsMinimized / GetSelected / GetHwnd` | 只读查询                             | HWND 只借用，窗口销毁后失效                                      |
+| `WndProc`                                         | 绑定 / 查找 App → HandleMessage      | 无绑定时默认处理；异常不得穿过系统回调边界                                 |
+| `HandleMessage`                                   | 按键改选择；WM_SIZE 改最小化；关闭 / Esc 停止循环 | WM_DESTROY 兜底停止并 PostQuitMessage；WM_NCDESTROY 清空句柄并解绑 |
+| RenderFrame                                       |                                  |                                                       |
 
 - **持有与销毁：** main 持有 App；正常路径先显式清理窗口，再结束 App 寿命。禁止拷贝 / 移动（I5）；异常策略见功能笔记。
 - **线程与回调：** 在窗口创建线程调用；创建、销毁窗口也可能同步触发回调。

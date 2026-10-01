@@ -1,4 +1,4 @@
-#include "../Core/Dx12/CpuDescriptorHeap.h"
+#include "D3D12/CpuDescriptorHeap.h"
 #include "D3D12TestFixture.h"
 
 #include <initializer_list>

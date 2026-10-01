@@ -6,6 +6,8 @@
 #define A2_WINDOW_CLEAR_WIN32EXCEPTION_H
 
 #include <string>
+#include <exception>
+#include <cstdint>
 #include <windows.h>
 
 

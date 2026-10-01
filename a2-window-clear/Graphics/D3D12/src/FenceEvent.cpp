@@ -2,12 +2,12 @@
 // Created by Amo on 2026/9/30.
 //
 
-#include "FenceEvent.h"
+#include "D3D12/FenceEvent.h"
 
 #include <cassert>
 #include <utility>
 
-#include "Utils/Exception.h"
+#include "Core/Exception.h"
 
 FenceEvent::FenceEvent() {
     mHandle = CreateEvent(nullptr, false, false, nullptr);

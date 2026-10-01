@@ -51,6 +51,7 @@ created: "2026-09-26"
 | GetCurrentBackBuffer     | ID3D12Resource*；获取当前交换链BackBuffer的观察指针                                 | 当前RAII实例存在；mCurrBackBuffer < SwapChainBufferCount |
 | GetCurrentBackBufferView | CD3DX12_CPU_DESCRIPTOR_HANDLE；获取当前mCurrBackBuffer对应的 Descriptor Heap句柄 | 当前RAII实例存在；mCurrBackBuffer < SwapChainBufferCount |
 | GetDepthStencilView      | CD3DX12_CPU_DESCRIPTOR_HANDLE；获取DSV Descriptor Heap的句柄                 | 当前RAII实例存在                                        |
+| RenderFrame              | void；从App处获取RenderFrame所需信息FrameParam（目前知识clearColor），执行渲染步骤           | clearColor合法（即做了归一化）；I1                           |
 
 | 函数签名                 | 可见性     | 行为                                 | 预期结果                                                                      |
 | -------------------- | ------- | ---------------------------------- | ------------------------------------------------------------------------- |

@@ -1,6 +1,6 @@
-#include "Core/App.h"
-#include "Core/Dx12/Dx12Renderer.h"
-#include "Utils/DxException.h"
+#include "Config/WindowConfig.h"
+#include "Renderer/Dx12Renderer.h"
+#include "Core/DxException.h"
 
 #include <d3dx12.h>
 #include <gtest/gtest.h>

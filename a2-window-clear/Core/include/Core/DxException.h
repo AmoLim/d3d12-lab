@@ -5,6 +5,7 @@
 #ifndef A2_WINDOW_CLEAR_DXEXCEPTION_H
 #define A2_WINDOW_CLEAR_DXEXCEPTION_H
 #include <exception>
+#include <cstdint>
 #include <dxgi.h>
 #include <string>
 

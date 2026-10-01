@@ -6,9 +6,8 @@
 
 #include <windows.h>
 
-#include "Dx12/Dx12Renderer.h"
-#include "Dx12/CpuDescriptorHeap.h"
-#include "Utils/Exception.h"
+#include "Renderer/Dx12Renderer.h"
+#include "Core/Exception.h"
 
 LRESULT App::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     App* app = nullptr;
@@ -80,6 +79,10 @@ void App::InitializeWindow() {
 void App::InitializeRenderer() {
     dx12Renderer_ = std::make_unique<Dx12Renderer>(hWnd_);
     ThrowIfFailedWin32(dx12Renderer_ != nullptr, "dx12Renderer_ Creation Failed");
+}
+
+void App::RenderFrame() {
+    dx12Renderer_->RenderFrame(A2WindowClear::clearColor[selected_]);
 }
 
 void App::CleanUp() noexcept {
